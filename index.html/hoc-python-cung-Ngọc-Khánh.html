@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học Python cùng Ngọc Khánh</title>
+<meta name="description" content="Học Python từ cơ bản đến thực hành trực tiếp.">
+
+<style>
+:root{
+--bg:#0b1020;--panel:#111a2e;--panel2:#17233b;
+--line:#263653;--text:#eef4ff;--muted:#9aabc6;
+--blue:#6ea8fe;--cyan:#58d6d0;--yellow:#ffd166;
+--green:#67d9a3;--red:#ff7b89
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:radial-gradient(circle at 80% 0%,#18294a 0,transparent 30%),var(--bg);
+color:var(--text);
+font:15px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif
+}
+button,input{font:inherit}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1220px;margin:auto;padding:0 22px}
+header{
+position:sticky;top:0;z-index:10;background:#0b1020ef;
+backdrop-filter:blur(14px);border-bottom:1px solid var(--line)
+}
+.nav{
+height:72px;display:flex;align-items:center;
+justify-content:space-between;gap:18px
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800}
+.logo{
+width:38px;height:38px;border-radius:12px;
+background:linear-gradient(135deg,var(--blue),var(--cyan));
+display:grid;place-items:center;color:#071222;font-weight:900;font-size:20px
+}
+.navlinks{display:flex;gap:24px;color:var(--muted);font-weight:600}
+.navlinks a:hover{color:var(--text)}
+.navbtn{
+border:1px solid var(--line);background:var(--panel);
+color:var(--text);padding:9px 14px;border-radius:11px;cursor:pointer
+}
+.hero{
+padding:68px 0 48px;display:grid;
+grid-template-columns:1.15fr .85fr;gap:42px;align-items:center
+}
+.eyebrow{
+display:inline-flex;gap:8px;align-items:center;color:var(--cyan);
+background:#16313b;border:1px solid #24505a;
+padding:6px 11px;border-radius:99px;font-size:12px;
+font-weight:800;text-transform:uppercase;letter-spacing:1px
+}
+.hero h1{font-size:clamp(38px,5.5vw,66px);line-height:1.06;letter-spacing:-2px;margin:20px 0}
+.gradient{
+background:linear-gradient(90deg,#77adff,#5fe0d1);
+-webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{font-size:17px;color:var(--muted);max-width:620px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.primary,.secondary{
+padding:12px 18px;border-radius:12px;font-weight:800;
+cursor:pointer;border:0
+}
+.primary{background:linear-gradient(110deg,var(--blue),var(--cyan));color:#071222}
+.secondary{background:var(--panel);border:1px solid var(--line);color:var(--text)}
+.hero-card{
+background:linear-gradient(145deg,#172844,#10182b);
+border:1px solid #304463;border-radius:22px;padding:22px;
+box-shadow:0 25px 70px #0005;transform:rotate(1deg)
+}
+.terminal-top{
+display:flex;align-items:center;gap:7px;
+border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px
+}
+.dot{width:9px;height:9px;border-radius:50%;background:#ff7b89}
+.dot:nth-child(2){background:#ffd166}
+.dot:nth-child(3){background:#67d9a3}
+.terminal-label{margin-left:auto;color:var(--muted);font-size:12px}
+.code{
+font:14px/1.9 ui-monospace,Consolas,monospace;
+color:#dce8ff;white-space:pre-wrap
+}
+.output{
+margin-top:13px;padding:12px;background:#09111f;
+border:1px solid var(--line);border-radius:12px;
+color:var(--green);font:13px ui-monospace,monospace
+}
+.section{padding:42px 0}
+.section-head{
+display:flex;justify-content:space-between;align-items:end;
+gap:20px;margin-bottom:22px
+}
+.section h2{font-size:30px;letter-spacing:-.7px;margin:0}
+.sub{color:var(--muted);margin:5px 0 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.stat,.card{
+background:linear-gradient(145deg,#141f35,#10182a);
+border:1px solid var(--line);border-radius:17px;padding:18px
+}
+.stat strong{display:block;font-size:25px}
+.stat span{color:var(--muted);font-size:13px}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
+.sidebar{
+position:sticky;top:92px;background:var(--panel);
+border:1px solid var(--line);border-radius:17px;padding:16px
+}
+.side-title{font-weight:800;margin:0 0 10px}
+.side-link{
+width:100%;display:flex;justify-content:space-between;gap:10px;
+text-align:left;padding:10px 11px;background:transparent;
+color:var(--muted);border:0;border-radius:10px;cursor:pointer
+}
+.side-link:hover,.side-link.active{background:#20314e;color:var(--text)}
+.side-link small{color:var(--cyan)}
+.lesson-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.lesson{
+background:var(--panel);border:1px solid var(--line);
+border-radius:16px;padding:18px;transition:.2s
+}
+.lesson:hover{transform:translateY(-3px);border-color:#5274a7}
+.lesson .tag{
+color:var(--cyan);font-size:11px;font-weight:800;
+text-transform:uppercase;letter-spacing:.8px
+}
+.lesson h3{margin:8px 0 5px;font-size:18px}
+.lesson p{color:var(--muted);font-size:13px;margin:0 0 14px}
+.lesson-foot{
+display:flex;justify-content:space-between;align-items:center;
+color:var(--muted);font-size:12px
+}
+.open-lesson{
+background:#203b5a;border:1px solid #31577d;
+color:#dceaff;padding:7px 10px;border-radius:9px;
+cursor:pointer;font-weight:700
+}
+.practice{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.editor,.result{
+background:#09111f;border:1px solid var(--line);
+border-radius:15px;overflow:hidden
+}
+.editor-head,.result-head{
+padding:11px 14px;background:#141f35;
+border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;
+align-items:center;color:var(--muted);font-size:12px
+}
+.editor textarea{
+width:100%;height:220px;resize:vertical;
+background:#09111f;color:#dce8ff;border:0;
+outline:0;padding:16px;font:14px/1.7 ui-monospace,monospace
+}
+.result pre{
+margin:0;padding:16px;min-height:220px;
+white-space:pre-wrap;overflow-wrap:anywhere;
+color:var(--green);font:14px/1.7 ui-monospace,monospace
+}
+.runbar{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.run{
+background:var(--green);color:#062018;border:0;
+padding:10px 15px;border-radius:10px;font-weight:900;cursor:pointer
+}
+.hint{color:var(--muted);font-size:12px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feature .icon{font-size:25px}
+.feature h3{margin:7px 0}
+.feature p{color:var(--muted);font-size:13px;margin:0}
+.progress-wrap{
+background:#0a1324;border:1px solid var(--line);
+height:9px;border-radius:99px;overflow:hidden;margin-top:10px
+}
+.progress-bar{
+height:100%;width:0;
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+transition:width .3s
+}
+footer{
+border-top:1px solid var(--line);padding:28px 0;
+color:var(--muted);font-size:13px;margin-top:45px
+}
+.footer-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.modal{
+position:fixed;inset:0;background:#020611c9;
+display:none;place-items:center;padding:18px;z-index:30
+}
+.modal.show{display:grid}
+.modal-box{
+max-width:850px;width:100%;background:var(--panel);
+border:1px solid #405574;border-radius:18px;padding:24px;
+max-height:90vh;overflow:auto
+}
+.modal-box h2{margin-top:0}
+.modal-box p,.modal-box li{color:#bdcbe0}
+.close{
+float:right;background:#243550;border:0;color:white;
+border-radius:8px;padding:6px 10px;cursor:pointer
+}
+.exercise-list{display:grid;gap:15px;margin:22px 0}
+.exercise-card{
+background:#0d1729;border:1px solid #304463;
+border-radius:15px;padding:17px
+}
+.exercise-top{
+display:flex;justify-content:space-between;
+gap:12px;align-items:center;flex-wrap:wrap
+}
+.exercise-top h3{margin:0;font-size:17px}
+.exercise-level{font-size:11px;color:var(--cyan);font-weight:800}
+.exercise-card p{color:#bdcbe0;margin:10px 0}
+.exercise-editor{
+width:100%;min-height:150px;resize:vertical;
+background:#070e1a;color:#e4edff;border:1px solid #304463;
+border-radius:10px;padding:13px;
+font:13px/1.65 ui-monospace,Consolas,monospace;outline:0
+}
+.exercise-editor:focus{border-color:var(--blue)}
+.exercise-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.check-exercise{
+background:linear-gradient(110deg,var(--blue),var(--cyan));
+color:#071222;border:0;border-radius:9px;
+padding:9px 13px;font-weight:800;cursor:pointer
+}
+.exercise-result{font-size:13px;color:var(--muted);margin-top:9px;min-height:20px}
+.exercise-result.ok{color:var(--green)}
+.exercise-result.bad{color:var(--red)}
+.exercise-progress{font-size:12px;color:var(--muted)}
+@media(max-width:850px){
+.hero{grid-template-columns:1fr;padding-top:45px}
+.hero-card{transform:none}.layout{grid-template-columns:1fr}
+.sidebar{position:static}.navlinks{display:none}
+.feature-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+.shell{padding:0 15px}.nav{height:64px}
+.hero h1{letter-spacing:-1.3px}
+.stats{grid-template-columns:1fr 1fr}
+.lesson-grid,.practice,.feature-grid{grid-template-columns:1fr}
+.section h2{font-size:25px}.hero{gap:25px}
+.stat:last-child{grid-column:span 2}
+}
+</style>
+</head>
+
+<body>
+<header>
+<div class="shell nav">
+<a class="brand" href="#">
+<span class="logo">Py</span>
+<span>HỌC PYTHON <span style="color:var(--cyan)">CÙNG NGỌC KHÁNH</span></span>
+</a>
+<nav class="navlinks">
+<a href="#home" class="active">Trang chủ</a>
+<a href="#courses">Bài học</a>
+<a href="#practice">Thực hành</a>
+<a href="#about">Giới thiệu</a>
+</nav>
+<button class="navbtn" onclick="document.querySelector('#courses').scrollIntoView({behavior:'smooth'})">Bắt đầu học ↗</button>
+</div>
+</header>
+
+<main class="shell">
+<section class="hero" id="home">
+<div>
+<span class="eyebrow">✦ Lộ trình Python cho người mới</span>
+<h1>Học Python.<br><span class="gradient">Từng bước một.</span></h1>
+<p>Từ những dòng code đầu tiên đến tư duy lập trình vững chắc. Học kiến thức cốt lõi, xem ví dụ dễ hiểu và luyện tập ngay trong trình duyệt.</p>
+<div class="actions">
+<button class="primary" onclick="document.querySelector('#courses').scrollIntoView({behavior:'smooth'})">Khám phá bài học →</button>
+<button class="secondary" onclick="document.querySelector('#practice').scrollIntoView({behavior:'smooth'})">Thử viết code</button>
+</div>
+<div class="stats">
+<div class="stat"><strong>06</strong><span>Chủ đề nền tảng</span></div>
+<div class="stat"><strong>24+</strong><span>Bài học & ví dụ</span></div>
+<div class="stat"><strong id="doneCount">0</strong><span>Bài đã hoàn thành</span></div>
+</div>
+</div>
+<div class="hero-card">
+<div class="terminal-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="terminal-label">hello_world.py</span></div>
+<div class="code">name = "Bạn"
+
+print("Xin chào, " + name)
+
+for i in range(3):
+    print("Keep learning!")</div>
+<div class="output">Xin chào, Bạn<br>Keep learning!<br>Keep learning!<br>Keep learning!<br><span style="color:var(--muted)">Process finished ✓</span></div>
+</div>
+</section>
+
+<section class="section" id="courses">
+<div class="section-head">
+<div><h2>Lộ trình học tập</h2><p class="sub">Chọn một chủ đề và bắt đầu chinh phục Python.</p></div>
+<span class="hint">Tiến độ của bạn được lưu trên thiết bị</span>
+</div>
+<div class="layout">
+<aside class="sidebar">
+<p class="side-title">Nội dung khóa học</p>
+<button class="side-link active" data-filter="all">Tất cả bài học <small>18</small></button>
+<button class="side-link" data-filter="Cơ bản">01 · Cơ bản</button>
+<button class="side-link" data-filter="Điều kiện">02 · Điều kiện</button>
+<button class="side-link" data-filter="Vòng lặp">03 · Vòng lặp</button>
+<button class="side-link" data-filter="Hàm">04 · Hàm</button>
+<button class="side-link" data-filter="Dữ liệu">05 · Cấu trúc dữ liệu</button>
+<button class="side-link" data-filter="Ứng dụng">06 · Ứng dụng</button>
+<div style="margin-top:20px;color:var(--muted);font-size:12px">
+TIẾN ĐỘ HOÀN THÀNH
+<b id="progressText" style="float:right;color:var(--cyan)">0%</b>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+</aside>
+<div class="lesson-grid" id="lessonGrid"></div>
+</div>
+</section>
+
+<section class="section" id="practice">
+<div class="section-head">
+<div><h2>Phòng thực hành Python</h2><p class="sub">Sửa code bên trái rồi nhấn Chạy để xem kết quả.</p></div>
+<span class="eyebrow">LIVE PRACTICE</span>
+</div>
+<div class="practice">
+<div class="editor">
+<div class="editor-head"><span>● main.py</span><span>Python 3</span></div>
+<textarea id="codeInput" spellcheck="false">name = input("Tên của bạn là gì? ")
+print("Xin chào", name)
+print("Chào mừng bạn đến với Python!")</textarea>
+</div>
+<div class="result">
+<div class="result-head"><span>▸ KẾT QUẢ</span><span id="runStatus">Sẵn sàng</span></div>
+<pre id="output">Nhấn “Chạy chương trình” để thực thi code của bạn.</pre>
+</div>
+</div>
+<div class="runbar">
+<button class="run" id="runBtn">▶ Chạy chương trình</button>
+<button class="secondary" id="resetBtn">↺ Khôi phục ví dụ</button>
+<span class="hint">Lần chạy đầu có thể mất vài giây để tải Python runtime.</span>
+</div>
+</section>
+
+<section class="section" id="about">
+<div class="section-head">
+<div><h2>Học thông minh hơn</h2><p class="sub">Không chỉ đọc lý thuyết — hãy viết code và tự khám phá.</p></div>
+</div>
+<div class="feature-grid">
+<div class="card feature"><div class="icon">🧭</div><h3>Lộ trình rõ ràng</h3><p>Đi từ biến, kiểu dữ liệu đến vòng lặp, hàm và cấu trúc dữ liệu.</p></div>
+<div class="card feature"><div class="icon">⌨️</div><h3>Thực hành trực tiếp</h3><p>Viết và chạy các ví dụ Python ngay trên trang web.</p></div>
+<div class="card feature"><div class="icon">📈</div><h3>Theo dõi tiến độ</h3><p>Đánh dấu bài đã học và xem tiến độ được lưu trên trình duyệt.</p></div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="shell footer-inner">
+<span>© 2026 Học Python cùng Ngọc Khánh · Học hôm nay, ngày mai chưa chắc bạn giỏi.</span>
+<span>Ngọc Khánh thiết kế cho người mới bắt đầu 👾</span>
+</div>
+</footer>
+
+<div class="modal" id="lessonModal">
+<div class="modal-box">
+<button class="close" id="closeModal">Đóng ✕</button>
+<div id="modalContent"></div>
+</div>
+</div>
+
+<script>
+const lessons = [
+{cat:"Cơ bản",title:"Làm quen với Python",desc:"Python là gì? Cài đặt, chạy chương trình và hiểu cách hoạt động.",time:"15 phút",body:`<p>Python là ngôn ngữ lập trình bậc cao, có cú pháp dễ đọc và được dùng trong phát triển web, tự động hóa, phân tích dữ liệu và trí tuệ nhân tạo.</p><h3>Chương trình đầu tiên</h3><pre>print('Hello, Python!')</pre><p>Hàm <code>print()</code> dùng để hiển thị dữ liệu ra màn hình.</p>`},
+{cat:"Cơ bản",title:"Biến và kiểu dữ liệu",desc:"Lưu trữ thông tin với int, float, str và bool.",time:"20 phút",body:`<p>Biến là tên đại diện cho một giá trị trong bộ nhớ.</p><pre>ten = 'An'\ntuoi = 18\ndiem = 8.5\ndang_hoc = True\nprint(ten, tuoi, diem)</pre><p>Dùng <code>type()</code> để kiểm tra kiểu dữ liệu.</p>`},
+{cat:"Cơ bản",title:"Nhập và xuất dữ liệu",desc:"Sử dụng input(), print() và chuyển đổi kiểu.",time:"20 phút",body:`<pre>ten = input('Nhập tên: ')\ntuoi = int(input('Nhập tuổi: '))\nprint(f'Xin chào {ten}, bạn {tuoi} tuổi')</pre><p><code>input()</code> luôn trả về chuỗi, vì vậy cần ép kiểu khi muốn tính toán.</p>`},
+{cat:"Cơ bản",title:"Toán tử trong Python",desc:"Toán tử số học, so sánh và logic.",time:"25 phút",body:`<pre>a, b = 10, 3\nprint(a + b)\nprint(a // b)\nprint(a % b)\nprint(a ** b)</pre>`},
+{cat:"Điều kiện",title:"Câu lệnh if – elif – else",desc:"Cho chương trình đưa ra quyết định.",time:"25 phút",body:`<pre>diem = float(input('Nhập điểm: '))\nif diem >= 8:\n    print('Giỏi')\nelif diem >= 6.5:\n    print('Khá')\nelse:\n    print('Cần cố gắng')</pre><p>Python dùng thụt lề để xác định khối lệnh.</p>`},
+{cat:"Điều kiện",title:"Biểu thức logic",desc:"Kết hợp điều kiện bằng and, or và not.",time:"20 phút",body:`<pre>tuoi = 20\nco_the_dang_ky = tuoi >= 18 and tuoi <= 60\nprint(co_the_dang_ky)</pre>`},
+{cat:"Vòng lặp",title:"Vòng lặp for",desc:"Lặp qua dãy số, chuỗi và danh sách.",time:"25 phút",body:`<pre>for i in range(1, 6):\n    print('Lần thứ', i)</pre><p><code>range(1, 6)</code> tạo các số từ 1 đến 5.</p>`},
+{cat:"Vòng lặp",title:"Vòng lặp while",desc:"Lặp khi điều kiện còn đúng.",time:"25 phút",body:`<pre>n = 1\nwhile n <= 5:\n    print(n)\n    n += 1</pre><p>Nhớ cập nhật biến điều kiện để tránh vòng lặp vô hạn.</p>`},
+{cat:"Vòng lặp",title:"break và continue",desc:"Điều khiển cách vòng lặp tiếp tục.",time:"15 phút",body:`<pre>for i in range(1, 10):\n    if i == 5:\n        continue\n    if i == 8:\n        break\n    print(i)</pre>`},
+{cat:"Hàm",title:"Tạo hàm với def",desc:"Đóng gói đoạn code để tái sử dụng.",time:"25 phút",body:`<pre>def tinh_tong(a, b):\n    return a + b\n\nprint(tinh_tong(4, 6))</pre>`},
+{cat:"Hàm",title:"Tham số và giá trị trả về",desc:"Truyền dữ liệu vào hàm và nhận kết quả.",time:"25 phút",body:`<pre>def chao(ten='bạn'):\n    return f'Xin chào {ten}!'\n\nprint(chao('Tuấn'))</pre>`},
+{cat:"Dữ liệu",title:"List – Danh sách",desc:"Lưu nhiều phần tử và thao tác với danh sách.",time:"30 phút",body:`<pre>diem = [8, 9, 7.5]\ndiem.append(10)\nprint(diem)\nprint(max(diem))</pre>`},
+{cat:"Dữ liệu",title:"Tuple và Set",desc:"Hai kiểu dữ liệu tập hợp hữu ích.",time:"20 phút",body:`<pre>toa_do = (10, 20)\nmon_hoc = {'Python', 'Toán', 'Python'}\nprint(toa_do)\nprint(mon_hoc)</pre>`},
+{cat:"Dữ liệu",title:"Dictionary",desc:"Lưu dữ liệu theo cặp khóa và giá trị.",time:"25 phút",body:`<pre>sinh_vien = {'ten': 'An', 'tuoi': 19}\nprint(sinh_vien['ten'])\nsinh_vien['diem'] = 8.5</pre>`},
+{cat:"Dữ liệu",title:"Xử lý chuỗi",desc:"Cắt chuỗi, định dạng và tìm kiếm văn bản.",time:"25 phút",body:`<pre>ho_ten = 'Nguyen Van An'\nprint(ho_ten.upper())\nprint(ho_ten.split())</pre>`},
+{cat:"Ứng dụng",title:"Đọc và ghi file",desc:"Lưu kết quả ra tệp văn bản.",time:"25 phút",body:`<pre>with open('ghi_chu.txt', 'w', encoding='utf-8') as f:\n    f.write('Hello Python')</pre><p>Bài tập trong trình duyệt sẽ luyện thao tác dữ liệu bằng biến vì môi trường chạy là sandbox.</p>`},
+{cat:"Ứng dụng",title:"Xử lý ngoại lệ",desc:"Dùng try – except để xử lý lỗi.",time:"20 phút",body:`<pre>try:\n    n = int(input('Nhập số: '))\n    print(10 / n)\nexcept ValueError:\n    print('Bạn cần nhập số nguyên')\nexcept ZeroDivisionError:\n    print('Không thể chia cho 0')</pre>`},
+{cat:"Ứng dụng",title:"Bài tập tổng hợp",desc:"Kết hợp kiến thức để giải quyết bài toán.",time:"35 phút",body:`<p><b>Bài tập:</b> Nhập danh sách điểm, tính điểm trung bình và tìm điểm cao nhất.</p><pre>diem = [7, 8.5, 9, 6.5]\nprint('Trung bình:', sum(diem)/len(diem))\nprint('Cao nhất:', max(diem))</pre>`}
+];
+
+const exerciseBank = [
+[
+{title:"In dòng chữ đầu tiên",prompt:"Dùng print() để in chính xác dòng chữ Hello, Python!",starter:"print('Hello, Python!')",tests:"assert 'Hello, Python!' in __output__"},
+{title:"In hai dòng",prompt:"In tên và câu I'm learning Python! trên hai dòng.",starter:"print('Ngoc Khanh')\nprint(\"I'm learning Python!\")",tests:"assert __output__.splitlines() == ['Ngoc Khanh', \"I'm learning Python!\"]"}
+],
+[
+{title:"Tạo biến sinh viên",prompt:"Tạo ten='An', tuoi=18, diem=8.5.",starter:"ten='An'\ntuoi=18\ndiem=8.5",tests:"assert ten == 'An' and tuoi == 18 and diem == 8.5"},
+{title:"Kiểm tra kiểu dữ liệu",prompt:"Tạo so_nguyen=10 và so_thuc=3.14.",starter:"so_nguyen=10\nso_thuc=3.14",tests:"assert type(so_nguyen).__name__=='int' and type(so_thuc).__name__=='float'"}
+],
+[
+{title:"Tính tổng hai số",prompt:"Với a=12, b=8, tính tổng vào tong.",starter:"a=12\nb=8\ntong=a+b",tests:"assert tong == 20"},
+{title:"Đổi độ C sang F",prompt:"Cho c=30, tính f = c*9/5+32.",starter:"c=30\nf=c*9/5+32",tests:"assert f == 86"}
+],
+[
+{title:"Phép chia nguyên và chia dư",prompt:"Với a=17, b=5, tạo thuong_nguyen và phan_du.",starter:"a=17\nb=5\nthuong_nguyen=a//b\nphan_du=a%b",tests:"assert thuong_nguyen==3 and phan_du==2"},
+{title:"Tính lũy thừa",prompt:"Tính 2 mũ 10 vào ket_qua.",starter:"ket_qua=2**10",tests:"assert ket_qua==1024"}
+],
+[
+{title:"Kiểm tra số dương",prompt:"Cho n=7, gán ket_qua='Duong' nếu n>0, ngược lại 'Khong duong'.",starter:"n=7\nif n>0:\n    ket_qua='Duong'\nelse:\n    ket_qua='Khong duong'",tests:"assert ket_qua=='Duong'"},
+{title:"Xếp loại điểm",prompt:"Với diem=8.2, xếp loại Gioi (>=8), Kha (>=6.5), còn lại Can co gang.",starter:"diem=8.2\nif diem>=8:\n    xep_loai='Gioi'\nelif diem>=6.5:\n    xep_loai='Kha'\nelse:\n    xep_loai='Can co gang'",tests:"assert xep_loai=='Gioi'"}
+],
+[
+{title:"Kiểm tra tuổi",prompt:"Tạo hop_le=True nếu tuoi nằm trong [18,60]. Với tuoi=20.",starter:"tuoi=20\nhop_le=tuoi>=18 and tuoi<=60",tests:"assert hop_le is True"},
+{title:"Điều kiện OR",prompt:"Miễn phí nếu là học sinh hoặc trên 60 tuổi. la_hoc_sinh=False, tuoi=65.",starter:"la_hoc_sinh=False\ntuoi=65\nmien_phi=la_hoc_sinh or tuoi>60",tests:"assert mien_phi is True"}
+],
+[
+{title:"Tính tổng bằng for",prompt:"Dùng for tính tổng từ 1 đến 5 vào tong.",starter:"tong=0\nfor i in range(1,6):\n    tong+=i",tests:"assert tong==15"},
+{title:"Tạo danh sách số chẵn",prompt:"Dùng for tạo cac_so_chan gồm số chẵn từ 2 đến 10.",starter:"cac_so_chan=[]\nfor i in range(2,11):\n    if i%2==0:\n        cac_so_chan.append(i)",tests:"assert cac_so_chan==[2,4,6,8,10]"}
+],
+[
+{title:"Đếm ngược",prompt:"Dùng while tạo dem_nguoc gồm 5,4,3,2,1.",starter:"dem_nguoc=[]\nn=5\nwhile n>=1:\n    dem_nguoc.append(n)\n    n-=1",tests:"assert dem_nguoc==[5,4,3,2,1]"},
+{title:"Tính giai thừa",prompt:"Dùng while tính 5! vào giai_thua.",starter:"n=5\ngiai_thua=1\ni=1\nwhile i<=n:\n    giai_thua*=i\n    i+=1",tests:"assert giai_thua==120"}
+],
+[
+{title:"Bỏ qua số 3",prompt:"Dùng continue tạo ket_qua gồm 1,2,4,5.",starter:"ket_qua=[]\nfor i in range(1,6):\n    if i==3:\n        continue\n    ket_qua.append(i)",tests:"assert ket_qua==[1,2,4,5]"},
+{title:"Dừng tại số 6",prompt:"Dùng break tạo danh sách 1 đến 5.",starter:"ket_qua=[]\nfor i in range(1,10):\n    if i==6:\n        break\n    ket_qua.append(i)",tests:"assert ket_qua==[1,2,3,4,5]"}
+],
+[
+{title:"Hàm tính tổng",prompt:"Viết tinh_tong(a,b) trả về tổng hai số.",starter:"def tinh_tong(a,b):\n    return a+b",tests:"assert tinh_tong(4,6)==10 and tinh_tong(-2,2)==0"},
+{title:"Hàm kiểm tra chẵn",prompt:"Viết la_so_chan(n) trả về True nếu n chẵn.",starter:"def la_so_chan(n):\n    return n%2==0",tests:"assert la_so_chan(8) is True and la_so_chan(7) is False"}
+],
+[
+{title:"Tham số mặc định",prompt:"Viết chao(ten='ban') trả về Xin chao <ten>.",starter:"def chao(ten='ban'):\n    return f'Xin chao {ten}'",tests:"assert chao()=='Xin chao ban' and chao('An')=='Xin chao An'"},
+{title:"Diện tích hình chữ nhật",prompt:"Viết dien_tich(dai,rong) trả về diện tích.",starter:"def dien_tich(dai,rong):\n    return dai*rong",tests:"assert dien_tich(5,3)==15"}
+],
+[
+{title:"Thêm phần tử vào list",prompt:"Thêm 8 vào cuối ds=[2,4,6].",starter:"ds=[2,4,6]\nds.append(8)",tests:"assert ds==[2,4,6,8]"},
+{title:"Điểm trung bình",prompt:"Tính trung bình của diem=[7,8,9] vào trung_binh.",starter:"diem=[7,8,9]\ntrung_binh=sum(diem)/len(diem)",tests:"assert trung_binh==8"}
+],
+[
+{title:"Tuple tọa độ",prompt:"Tạo toa_do=(10,20), lấy phần tử thứ hai.",starter:"toa_do=(10,20)\nphan_tu=toa_do[1]",tests:"assert toa_do==(10,20) and phan_tu==20"},
+{title:"Loại bỏ phần tử trùng",prompt:"Tạo set mon_hoc từ ['Python','Toan','Python'].",starter:"mon_hoc=set(['Python','Toan','Python'])",tests:"assert mon_hoc=={'Python','Toan'}"}
+],
+[
+{title:"Truy cập Dictionary",prompt:"Tạo sinh_vien có ten='An', tuoi=19; lấy tên vào ten_sv.",starter:"sinh_vien={'ten':'An','tuoi':19}\nten_sv=sinh_vien['ten']",tests:"assert ten_sv=='An'"},
+{title:"Thêm dữ liệu Dictionary",prompt:"Thêm khóa diem=8.5 vào sinh_vien.",starter:"sinh_vien={'ten':'An','tuoi':19}\nsinh_vien['diem']=8.5",tests:"assert sinh_vien['diem']==8.5"}
+],
+[
+{title:"Viết hoa chuỗi",prompt:"Dùng upper() chuyển ho_ten='nguyen van an' thành chữ hoa.",starter:"ho_ten='nguyen van an'\nviet_hoa=ho_ten.upper()",tests:"assert viet_hoa=='NGUYEN VAN AN'"},
+{title:"Tách từ",prompt:"Dùng split() tách 'Hoc Python moi ngay' thành cac_tu.",starter:"cau='Hoc Python moi ngay'\ncac_tu=cau.split()",tests:"assert cac_tu==['Hoc','Python','moi','ngay']"}
+],
+[
+{title:"Nội dung ghi file",prompt:"Trong bài tập này mô phỏng nội dung ghi file bằng biến noi_dung='Hello Python'.",starter:"noi_dung='Hello Python'\nprint(noi_dung)",tests:"assert noi_dung=='Hello Python'"},
+{title:"Tách dòng văn bản",prompt:"Dùng splitlines() tách văn bản thành cac_dong.",starter:"van_ban='Python\\nla ngon ngu lap trinh'\ncac_dong=van_ban.splitlines()",tests:"assert cac_dong==['Python','la ngon ngu lap trinh']"}
+],
+[
+{title:"Bắt lỗi chia cho 0",prompt:"Dùng try/except, khi chia 10 cho 0 thì gán thong_bao='Khong the chia cho 0'.",starter:"try:\n    ket_qua=10/0\n    thong_bao='Thanh cong'\nexcept ZeroDivisionError:\n    thong_bao='Khong the chia cho 0'",tests:"assert thong_bao=='Khong the chia cho 0'"},
+{title:"Chuyển đổi an toàn",prompt:"Chuyển 'abc' sang int; nếu ValueError thì gán hop_le=False.",starter:"try:\n    n=int('abc')\n    hop_le=True\nexcept ValueError:\n    hop_le=False",tests:"assert hop_le is False"}
+],
+[
+{title:"Tính điểm trung bình",prompt:"Với diem=[7,8.5,9,6.5], tính trung_binh.",starter:"diem=[7,8.5,9,6.5]\ntrung_binh=sum(diem)/len(diem)",tests:"assert trung_binh==7.75"},
+{title:"Tìm điểm cao nhất",prompt:"Với diem=[7,8.5,9,6.5], tìm cao_nhat.",starter:"diem=[7,8.5,9,6.5]\ncao_nhat=max(diem)",tests:"assert cao_nhat==9"}
+]
+];
+
+let completed=JSON.parse(localStorage.getItem('pyCompleted')||'[]');
+const grid=document.getElementById('lessonGrid');
+
+function updateProgress(){
+ document.getElementById('doneCount').textContent=completed.length;
+ const pct=Math.round(completed.length/lessons.length*100);
+ document.getElementById('progressText').textContent=pct+'%';
+ document.getElementById('progressBar').style.width=pct+'%';
+}
+function render(filter='all'){
+ grid.innerHTML='';
+ lessons.forEach((l,i)=>{
+  if(filter!=='all'&&l.cat!==filter)return;
+  const done=completed.includes(i);
+  const el=document.createElement('article');
+  el.className='lesson';
+  el.innerHTML=`<div class="tag">${l.cat} · BÀI ${(i+1).toString().padStart(2,'0')}</div>
+  <h3>${l.title}</h3><p>${l.desc}</p>
+  <div class="lesson-foot"><span>◷ ${l.time} ${done?' · ✓ Đã học':''}</span>
+  <button class="open-lesson" data-id="${i}">${done?'Ôn tập':'Học ngay'} →</button></div>`;
+  grid.appendChild(el);
+ });
+ grid.querySelectorAll('button').forEach(b=>b.onclick=()=>openLesson(+b.dataset.id));
+}
+function openLesson(i){
+ const l=lessons[i],tasks=exerciseBank[i]||[];
+ const solved=JSON.parse(localStorage.getItem('pySolved')||'{}');
+ const count=tasks.filter((_,j)=>solved[i+'-'+j]).length;
+ const cards=tasks.map((t,j)=>`
+ <article class="exercise-card">
+  <div class="exercise-top"><h3>Bài tập ${j+1}: ${t.title}</h3><span class="exercise-level">THỰC HÀNH PYTHON</span></div>
+  <p>${t.prompt}</p>
+  <textarea class="exercise-editor" id="exerciseCode${j}" spellcheck="false">${escapeHTML(t.starter)}</textarea>
+  <div class="exercise-actions">
+   <button class="check-exercise" data-exercise="${j}">▶ Chạy & kiểm tra</button>
+   <span class="exercise-progress" id="exerciseStatus${j}">${solved[i+'-'+j]?'✓ Đã hoàn thành':'Chưa hoàn thành'}</span>
+  </div>
+  <div class="exercise-result" id="exerciseResult${j}">Viết lời giải rồi nhấn “Chạy & kiểm tra”.</div>
+ </article>`).join('');
+ document.getElementById('modalContent').innerHTML=`
+ <div class="tag">${l.cat} · BÀI ${(i+1).toString().padStart(2,'0')}</div>
+ <h2>${l.title}</h2><p>${l.desc}</p>${l.body}
+ <div class="exercise-list">
+  <div><h2>🧩 Bài tập thực hành</h2>
+  <p class="sub">Viết code Python trực tiếp bên dưới. Hệ thống tự chạy test case để kiểm tra.</p>
+  <p class="exercise-progress" id="lessonExerciseProgress">Đã hoàn thành ${count}/${tasks.length} bài tập</p></div>
+  ${cards}
+ </div>
+ <button class="primary" id="markDone">${completed.includes(i)?'Đã hoàn thành ✓':'Đánh dấu đã học ✓'}</button>`;
+ document.getElementById('lessonModal').classList.add('show');
+ document.querySelectorAll('.check-exercise').forEach(b=>b.onclick=()=>runExercise(i,+b.dataset.exercise));
+ document.getElementById('markDone').onclick=()=>{
+  if(!completed.includes(i))completed.push(i);
+  localStorage.setItem('pyCompleted',JSON.stringify(completed));
+  updateProgress();
+  render(document.querySelector('.side-link.active').dataset.filter);
+  document.getElementById('markDone').textContent='Đã hoàn thành ✓';
+ };
+}
+function escapeHTML(value){
+ return value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+let pyodidePromise;
+async function getPython(){
+ if(!pyodidePromise)pyodidePromise=loadPyodideRuntime();
+ return await pyodidePromise;
+}
+async function runExercise(li,ei){
+ const task=exerciseBank[li][ei];
+ const editor=document.getElementById('exerciseCode'+ei);
+ const result=document.getElementById('exerciseResult'+ei);
+ const status=document.getElementById('exerciseStatus'+ei);
+ const btn=document.querySelector(`.check-exercise[data-exercise="${ei}"]`);
+ btn.disabled=true;btn.textContent='Đang kiểm tra…';
+ result.className='exercise-result';result.textContent='Đang khởi động Python…';
+ try{
+  const py=await getPython();
+  py.globals.set('__student_code',editor.value);
+  py.globals.set('__test_code',task.tests);
+  await py.runPythonAsync(`
+import contextlib, io, traceback
+__buf = io.StringIO()
+__exercise_error = None
+try:
+    with contextlib.redirect_stdout(__buf):
+        exec(__student_code, globals())
+    __output__ = __buf.getvalue()
+    exec(__test_code, globals())
+except Exception as e:
+    __exercise_error = str(e)
+`);
+  const error=py.globals.get('__exercise_error');
+  if(error===null || error===undefined){
+   const saved=JSON.parse(localStorage.getItem('pySolved')||'{}');
+   saved[li+'-'+ei]=true;
+   localStorage.setItem('pySolved',JSON.stringify(saved));
+   result.className='exercise-result ok';
+   result.textContent='🎉 Chính xác! Tất cả test case đều đạt. Bạn đã hoàn thành bài tập này.';
+   status.textContent='✓ Đã hoàn thành';
+   const n=exerciseBank[li].filter((_,j)=>saved[li+'-'+j]).length;
+   document.getElementById('lessonExerciseProgress').textContent=`Đã hoàn thành ${n}/${exerciseBank[li].length} bài tập`;
+  }else{
+   result.className='exercise-result bad';
+   result.textContent='Chưa đúng hoặc code có lỗi: '+error;
+   status.textContent='Cần thử lại';
+  }
+ }catch(e){
+  result.className='exercise-result bad';
+  result.textContent='Không chạy được Python: '+String(e);
+ }finally{
+  btn.disabled=false;btn.textContent='▶ Chạy & kiểm tra';
+ }
+}
+
+document.querySelectorAll('.side-link').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('.side-link').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');render(b.dataset.filter);
+});
+document.getElementById('closeModal').onclick=()=>document.getElementById('lessonModal').classList.remove('show');
+document.getElementById('lessonModal').onclick=e=>{
+ if(e.target.id==='lessonModal')e.currentTarget.classList.remove('show');
+};
+render();updateProgress();
+
+const defaultCode=`name = input("Tên của bạn là gì? ")
+print("Xin chào", name)
+print("Chào mừng bạn đến với Python!")`;
+
+document.getElementById('resetBtn').onclick=()=>{
+ document.getElementById('codeInput').value=defaultCode;
+ document.getElementById('output').textContent='Đã khôi phục ví dụ.';
+};
+
+async function runCode(){
+ const out=document.getElementById('output');
+ const status=document.getElementById('runStatus');
+ const btn=document.getElementById('runBtn');
+ btn.disabled=true;btn.textContent='Đang chạy…';
+ status.textContent='Đang khởi tạo';out.textContent='Đang tải môi trường Python…';
+ try{
+  const py=await getPython();
+  let output='';
+  py.setStdout({batched:s=>output+=s});
+  py.setStderr({batched:s=>output+='\n'+s});
+  py.setStdin({stdin:()=>window.prompt('Nhập dữ liệu cho chương trình:')??''});
+  try{
+   await py.runPythonAsync(document.getElementById('codeInput').value);
+   out.textContent=output||'(Chương trình chạy xong, không có nội dung in ra.)';
+   status.textContent='Hoàn tất ✓';
+  }catch(e){
+   out.textContent=String(e);status.textContent='Có lỗi';
+  }
+ }catch(e){
+  out.textContent='Không tải được Python runtime. Hãy kiểm tra kết nối Internet rồi thử lại.\n'+e;
+  status.textContent='Không thể khởi tạo';
+ }finally{
+  btn.disabled=false;btn.textContent='▶ Chạy chương trình';
+ }
+}
+function loadPyodideRuntime(){
+ return new Promise((resolve,reject)=>{
+  if(window.loadPyodide){window.loadPyodide().then(resolve,reject);return;}
+  const s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js';
+  s.onload=()=>window.loadPyodide().then(resolve,reject);
+  s.onerror=reject;document.head.appendChild(s);
+ });
+}
+document.getElementById('runBtn').onclick=runCode;
+</script>
+</body>
+</html>
